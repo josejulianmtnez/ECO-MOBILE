@@ -1,6 +1,6 @@
-import {StyleSheet, View, TextInput, Button, Text} from 'react-native'
-import React, { useState } from "react";
 import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { Button, Text, TextInput, View } from 'react-native';
 import { login } from "../src/utils/api";
 
 
@@ -14,7 +14,6 @@ export default function Login() {
     try {
       const res = await login(email, password);
       if (res.token) {
-        // Guarda token localmente (AsyncStorage)
         router.push("/");
       } else {
         setError(res.message || "Error en login");
