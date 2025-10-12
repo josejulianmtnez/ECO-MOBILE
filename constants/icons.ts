@@ -5,6 +5,8 @@ import logo from "@/assets/icons/logo.png";
 import device from "@/assets/icons/device.png";
 import devices from "@/assets/icons/devices.png";
 import arrow from "@/assets/icons/arrow.png";
+import search from "@/assets/icons/search.png";
+import file from "@/assets/icons/file.png";
 
 export const icons = {
   home,
@@ -14,4 +16,6 @@ export const icons = {
   device,
   devices,
   arrow,
+  search,
+  file,
 };

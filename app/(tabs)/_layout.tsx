@@ -1,23 +1,28 @@
-import {StyleSheet, Image, ImageBackground, Text, View} from 'react-native'
-import {Tabs} from "expo-router"
-import {images} from "@/constants/images";
-import {icons} from "@/constants/icons";
+import { icons } from "@/constants/icons";
+import { images } from "@/constants/images";
+import { Tabs } from "expo-router";
+
+import { Image, ImageBackground, StyleSheet, View } from 'react-native';
 
 const TabIcon = ({focused, icon, title}: any) => {
     if(focused){
         return (
             <ImageBackground
-                source={images.highlight}
-                className={"flex flex-row w-full flex-1 min-w-[112px] min-h-14 mt-4 justify-center items-center rounded-full overflow-hidden"}
+                source={images.tabFocus}
+                className={"flex w-full h-28 min-w-[112px] min-h-14 justify-center items-center -translate-y-4"}
             >
-                <Image source={icon} tintColor="#151312" className={"size-5"}/>
-                <Text className={"text-secondary text-base font-semibold ml-2"}>{title}</Text>
+                <ImageBackground 
+                    source={images.tabFocusCircle} 
+                    className={"w-20 h-20 justify-center items-center translate-y-1"}
+                >
+                    <Image source={icon} tintColor="#000000" className={"size-5"}/>
+                </ImageBackground>
             </ImageBackground>
         )
     }
     return (
-        <View className={"size-full justify-center items-center mt-4 rounded-full"}>
-            <Image source={icon} tintColor="#A8B5DB" className={"size-5"} />
+        <View className={"size-full justify-center items-center"}>
+            <Image source={icon} tintColor="#FFFFFF" className={"size-5 translate-y-2"} />
         </View>
     )
 }
@@ -35,15 +40,11 @@ const _Layout = () => {
                     alignItems: "center",
                 },
                 tabBarStyle: {
-                    backgroundColor: "#0F0D23",
-                    borderRadius: 50,
-                    marginHorizontal: 20,
-                    marginBottom: 36,
+                    backgroundColor: "#098FFE",
+                    marginBottom: 50,
+                    width: "100%",
                     height: 52,
                     position: "absolute",
-                    overflow: "hidden",
-                    borderWidth: 1,
-                    borderColor: "#0F0D23",
                 },
             }}
         >
@@ -69,7 +70,7 @@ const _Layout = () => {
                     tabBarIcon:({ focused }) => (
                         <TabIcon
                             focused={focused}
-                            icon={icons.devices}
+                            icon={icons.search}
                             title={"Dispositivos"}
                         />
                     )
