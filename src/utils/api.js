@@ -1,5 +1,5 @@
 const API_URL = "http://192.168.0.16:3500";
-export const signup = async (name, email, role, linked_child, password) => {
+export const signup = async (name, email, password, role = "parent", linked_child = null) => {
   const res = await fetch(`${API_URL}/api/auth/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

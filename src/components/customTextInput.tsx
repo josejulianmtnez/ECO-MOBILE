@@ -1,9 +1,15 @@
-import React,  { useState } from "react";
-import { Text, TextInput, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { TextInput, TouchableOpacity, View } from "react-native";
 
 const CustomTextInput = ({ label, value, onChangeText, secureTextEntry }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const isPassword = secureTextEntry === true;
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   return (
     <View className="mt-4">
@@ -13,7 +19,7 @@ const CustomTextInput = ({ label, value, onChangeText, secureTextEntry }) => {
         <TextInput
           value={value}
           onChangeText={onChangeText}
-          secureTextEntry={secureTextEntry}
+          secureTextEntry={isPassword && !isPasswordVisible}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder={label}
@@ -21,7 +27,14 @@ const CustomTextInput = ({ label, value, onChangeText, secureTextEntry }) => {
           className="flex-1 py-2 text-base text-gray-700"
         />
         {isPassword && (
-          <Text className="text-gray-400 text-xl ml-2">👁</Text>
+          <TouchableOpacity onPress={togglePasswordVisibility}>
+            <Ionicons
+              name={isPasswordVisible ? "eye-off" : "eye"}
+              size={20}
+              color="#9CA3AF"
+              style={{ marginLeft: 8 }}
+            />
+          </TouchableOpacity>
         )}
       </View>
     </View>

@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   ImageBackground,
   Pressable,
+  StyleSheet,
   Text,
   View,
 } from "react-native";
@@ -20,20 +21,21 @@ const SegmentedControl = ({
   onSelect: (mode: "login" | "register") => void;
 }) => {
   const isLogin = selected === "login";
-  const activeShadow = "shadow-lg";
 
   return (
-    <View className="flex-row p-1 bg-gray-300 rounded-full h-16">
+    <View style={styles.segmentedContainer}>
       <Pressable
         onPress={() => onSelect("login")}
-        className={`flex-1 justify-center py-2 rounded-full ${
-          isLogin ? "bg-primary " + activeShadow : ""
-        }`}
+        style={[
+          styles.segmentButton,
+          isLogin ? styles.activeLoginButton : styles.inactiveButton
+        ]}
       >
         <Text
-          className={`text-center font-bold ${
-            isLogin ? "text-white" : "text-gray-600"
-          }`}
+          style={[
+            styles.segmentText,
+            isLogin ? styles.activeLoginText : styles.inactiveText
+          ]}
         >
           Iniciar Sesión
         </Text>
@@ -41,14 +43,16 @@ const SegmentedControl = ({
 
       <Pressable
         onPress={() => onSelect("register")}
-        className={`flex-1 justify-center py-2 rounded-full ${
-          !isLogin ? "bg-white " + activeShadow : ""
-        }`}
+        style={[
+          styles.segmentButton,
+          !isLogin ? styles.activeRegisterButton : styles.inactiveButton
+        ]}
       >
         <Text
-          className={`text-center font-bold ${
-            !isLogin ? "text-blue-600" : "text-gray-600"
-          }`}
+          style={[
+            styles.segmentText,
+            !isLogin ? styles.activeRegisterText : styles.inactiveText
+          ]}
         >
           Registrarse
         </Text>
@@ -91,7 +95,6 @@ export default function Login() {
 
   const handleSignUp = async () => {
     setError("");
-
     if (!email || !password || !confirmPassword || !name) {
       setError("Por favor, completa todos los campos");
       return;
@@ -104,7 +107,7 @@ export default function Login() {
 
     setIsLoading(true);
     try {
-      const res = await signup(email, password, name);
+      const res = await signup(name, email, password);
       if (res.token) {
         router.push("/");
       } else {
@@ -125,32 +128,48 @@ export default function Login() {
       resizeMode="cover"
       className="w-full h-[55%] items-center justify-center"
     >
-      <View className="absolute top-[65%] w-full items-center">
+      <View className="absolute top-[55%] w-full items-center">
         <View className="bg-white p-6 w-11/12 max-w-sm rounded-3xl shadow-2xl">
           <SegmentedControl selected={authMode} onSelect={setAuthMode} />
 
           <View className="mt-8">
-            <CustomTextInput
-              label="Correo electrónico"
-              value={email}
-              onChangeText={setEmail}
-              secureTextEntry={false}
-            />
+            {authMode === "login" ? (
+              <>
+                <CustomTextInput
+                  label="Correo electrónico"
+                  value={email}
+                  onChangeText={setEmail}
+                  secureTextEntry={false}
+                />
 
-            <CustomTextInput
-              label="Contraseña"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
-            />
-
-            {authMode === "register" && (
+                <CustomTextInput
+                  label="Contraseña"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={true}
+                />
+              </>
+            ) : (
               <>
                 <CustomTextInput
                   label="Nombre Completo"
                   value={name}
                   onChangeText={setName}
                   secureTextEntry={false}
+                />
+
+                <CustomTextInput
+                  label="Correo electrónico"
+                  value={email}
+                  onChangeText={setEmail}
+                  secureTextEntry={false}
+                />
+
+                <CustomTextInput
+                  label="Contraseña"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={true}
                 />
 
                 <CustomTextInput
@@ -181,3 +200,57 @@ export default function Login() {
     </ImageBackground>
   );
 }
+
+const styles = StyleSheet.create({
+  segmentedContainer: {
+    flexDirection: 'row',
+    padding: 4,
+    backgroundColor: '#D1D5DB',
+    borderRadius: 32,
+    height: 64,
+  },
+  segmentButton: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingVertical: 8,
+    borderRadius: 32,
+  },
+  activeLoginButton: {
+    backgroundColor: '#3B82F6',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 8,
+  },
+  activeRegisterButton: {
+    backgroundColor: '#3B82F6',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 8,
+  },
+  inactiveButton: {
+    backgroundColor: 'transparent',
+  },
+  segmentText: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  activeLoginText: {
+    color: '#FFFFFF',
+  },
+  activeRegisterText: {
+    color: '#FFFFFF',
+  },
+  inactiveText: {
+    color: '#6B7280',
+  },
+});
