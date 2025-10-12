@@ -1,8 +1,7 @@
-import { icons } from "@/constants/icons";
-import { images } from "@/constants/images";
+import {StyleSheet, Image, ImageBackground, Text, View} from 'react-native'
 import { Tabs } from "expo-router";
-
-import { Image, ImageBackground, StyleSheet, View } from 'react-native';
+import { images } from "@/constants/images";
+import { icons } from "@/constants/icons";
 
 const TabIcon = ({focused, icon, title}: any) => {
     if(focused){
@@ -69,7 +68,7 @@ const _Layout = () => {
                     tabBarIcon:({ focused }) => (
                         <TabIcon
                             focused={focused}
-                            icon={icons.search}
+                            icon={icons.devices}
                             title={"Dispositivos"}
                         />
                     )
