@@ -1,5 +1,5 @@
 import {StyleSheet, Image, ImageBackground, Text, View} from 'react-native'
-import {Tabs} from "expo-router";
+import {Tabs} from "expo-router"
 import {images} from "@/constants/images";
 import {icons} from "@/constants/icons";
 
