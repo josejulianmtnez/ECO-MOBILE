@@ -1,9 +1,9 @@
-//import bg from "@/assets/images/bg.png";
+import bgLogin from "@/assets/images/bgLogin.png";
 import highlight from "@/assets/images/highlight.png";
 import rankingGradient from "@/assets/images/rankingGradient.png";
 
 export const images = {
-  //bg,
+  bgLogin,
   highlight,
   rankingGradient,
 };
