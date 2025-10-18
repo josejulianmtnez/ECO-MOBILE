@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Text,
   View,
+  KeyboardAvoidingView
 } from "react-native";
 import { login, signup } from "../src/utils/api";
 
@@ -82,8 +83,9 @@ export default function Login() {
     try {
       const res = await login(email, password);
       if (res.token) {
-        router.push("/");
+        router.replace("/");
       } else {
+        alert(res.message || "Error al iniciar sesión");
         setError(res.message || "Error al iniciar sesión");
       }
     } catch (err) {
@@ -96,11 +98,13 @@ export default function Login() {
   const handleSignUp = async () => {
     setError("");
     if (!email || !password || !confirmPassword || !name) {
+      alert("Por favor, completa todos los campos");
       setError("Por favor, completa todos los campos");
       return;
     }
 
     if (password !== confirmPassword) {
+      alert("Las contraseñas no coinciden");
       setError("Las contraseñas no coinciden.");
       return;
     }
@@ -109,8 +113,9 @@ export default function Login() {
     try {
       const res = await signup(name, email, password);
       if (res.token) {
-        router.push("/");
+        router.replace("/");
       } else {
+        alert(res.message || "Error al registrarse");
         setError(res.message || "Error al registrarse");
       }
     } catch (err) {
@@ -123,81 +128,83 @@ export default function Login() {
   const handleSubmit = authMode === "login" ? handleLogin : handleSignUp;
 
   return (
-    <ImageBackground
-      source={images.bgLogin}
-      resizeMode="cover"
-      className="w-full h-[55%] items-center justify-center"
-    >
-      <View className="absolute top-[55%] w-full items-center">
-        <View className="bg-white p-6 w-11/12 max-w-sm rounded-3xl shadow-2xl">
-          <SegmentedControl selected={authMode} onSelect={setAuthMode} />
+    <KeyboardAvoidingView className="flex-1 bg-white" enabled={true} behavior="padding">
+      <ImageBackground
+        source={images.bgLogin}
+        resizeMode="cover"
+        className="w-full h-[55%] items-center justify-center bg-white"
+      >
+        <View className="absolute top-[55%] w-full items-center">
+          <View className="bg-white p-6 w-11/12 max-w-sm rounded-3xl shadow-2xl">
+            <SegmentedControl selected={authMode} onSelect={setAuthMode} />
 
-          <View className="mt-8">
-            {authMode === "login" ? (
-              <>
-                <CustomTextInput
-                  label="Correo electrónico"
-                  value={email}
-                  onChangeText={setEmail}
-                  secureTextEntry={false}
-                />
+            <View className="mt-8">
+              {authMode === "login" ? (
+                <>
+                  <CustomTextInput
+                    label="Correo electrónico"
+                    value={email.trim()}
+                    onChangeText={setEmail}
+                    secureTextEntry={false}
+                  />
 
-                <CustomTextInput
-                  label="Contraseña"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={true}
-                />
-              </>
-            ) : (
-              <>
-                <CustomTextInput
-                  label="Nombre Completo"
-                  value={name}
-                  onChangeText={setName}
-                  secureTextEntry={false}
-                />
+                  <CustomTextInput
+                    label="Contraseña"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={true}
+                  />
+                </>
+              ) : (
+                <>
+                  <CustomTextInput
+                    label="Nombre Completo"
+                    value={name}
+                    onChangeText={setName}
+                    secureTextEntry={false}
+                  />
 
-                <CustomTextInput
-                  label="Correo electrónico"
-                  value={email}
-                  onChangeText={setEmail}
-                  secureTextEntry={false}
-                />
+                  <CustomTextInput
+                    label="Correo electrónico"
+                    value={email.trim()}
+                    onChangeText={setEmail}
+                    secureTextEntry={false}
+                  />
 
-                <CustomTextInput
-                  label="Contraseña"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={true}
-                />
+                  <CustomTextInput
+                    label="Contraseña"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={true}
+                  />
 
-                <CustomTextInput
-                  label="Confirmar Contraseña"
-                  value={confirmPassword}
-                  onChangeText={setConfirmPassword}
-                  secureTextEntry={true}
-                />
-              </>
-            )}
+                  <CustomTextInput
+                    label="Confirmar Contraseña"
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    secureTextEntry={true}
+                  />
+                </>
+              )}
 
-            <MainButton
-              onPress={handleSubmit}
-              title={authMode === "login" ? "Iniciar Sesión" : "Registrarse"}
-              disabled={isLoading}
-            />
+              <MainButton
+                onPress={handleSubmit}
+                title={authMode === "login" ? "Iniciar Sesión" : "Registrarse"}
+                disabled={isLoading}
+              />
 
-            {isLoading ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <Text className="text-white font-bold text-lg">
-                {authMode === "login" ? "Iniciar Sesión" : "Registrarse"}
-              </Text>
-            )}
+              {isLoading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text className="text-white font-bold text-lg">
+                  {authMode === "login" ? "Iniciar Sesión" : "Registrarse"}
+                </Text>
+              )}
+            </View>
           </View>
         </View>
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+    </KeyboardAvoidingView>
   );
 }
 
