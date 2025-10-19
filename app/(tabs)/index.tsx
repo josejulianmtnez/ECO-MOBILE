@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator, Image } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { generateLinkCode } from "../../src/utils/api.js";
 import { images } from "@/constants/images";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native";
+import { generateLinkCode } from "../../src/utils/api.js";
 
 export default function LinkCodeScreen() {
   const [linkCode, setLinkCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [tutorId, setTutorId] = useState<number | null>(null);
+  const [alreadyGenerated, setAlreadyGenerated] = useState(false)
 
   const steps = [
     "Descargue e instale la aplicación en el dispositivo de su hijo.",
@@ -38,6 +39,13 @@ export default function LinkCodeScreen() {
     }
   };
 
+  useEffect(() => {
+    if (tutorId && !alreadyGenerated) {
+      handleGenerateCode()
+      setAlreadyGenerated(true)
+    }
+  }, [tutorId])
+
   return (
         <View className="flex-1 bg-gray-100 items-center pt-16 px-6">
       <Text className="text-primary text-4xl font-bold text-center mb-6">
@@ -59,12 +67,12 @@ export default function LinkCodeScreen() {
         onPress={handleGenerateCode}
         className="bg-blue-500 px-4 py-2 rounded mb-8"
       >
-        <Text className="text-white text-lg">Generar Código de Vinculación</Text>
+        <Text className="text-white text-lg">Generar nuevo código de vinculación</Text>
       </TouchableOpacity>
 
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
-      {linkCode ? (
+      {linkCode != null && (
         <View className="flex-row space-x-2">
           {linkCode.split("").map((digit, index) => (
             <View
@@ -75,8 +83,6 @@ export default function LinkCodeScreen() {
             </View>
           ))}
         </View>
-      ) : (
-        <Text className="text-gray-500">Tu código aparecerá aquí</Text>
       )}
       </View>
   );

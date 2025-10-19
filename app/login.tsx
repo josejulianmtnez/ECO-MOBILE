@@ -1,6 +1,7 @@
 import { images } from "@/constants/images";
 import CustomTextInput from "@/src/components/customTextInput";
 import MainButton from "@/src/components/mainButton";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -85,6 +86,7 @@ export default function Login() {
     try {
       const res = await login(email, password);
       if (res.token) {
+        await AsyncStorage.setItem("sessionData", JSON.stringify(res))
         router.replace("/");
       } else {
         alert(res.message || "Error al iniciar sesión");
