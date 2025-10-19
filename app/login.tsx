@@ -6,11 +6,11 @@ import React, { useState } from "react";
 import {
   ActivityIndicator,
   ImageBackground,
+  KeyboardAvoidingView,
   Pressable,
   StyleSheet,
   Text,
-  View,
-  KeyboardAvoidingView
+  View
 } from "react-native";
 import { login, signup } from "../src/utils/api";
 
@@ -73,10 +73,12 @@ export default function Login() {
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
 
   const handleLogin = async () => {
-    setError("");
-    if (!email || !password) {
-      setError("Por favor, ingresa correo y contraseña");
-      return;
+    if (!email.trim() || !password.trim()) {
+      const msg = "Por favor, ingresa correo y contraseña"
+      alert(msg)
+      setError(msg)
+      
+      return
     }
 
     setIsLoading(true);
