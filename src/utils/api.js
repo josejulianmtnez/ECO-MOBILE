@@ -1,6 +1,5 @@
+import { API_PORT, API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL } from "@env";
-import { API_PORT } from "@env";
 
 const fullApiUrl = `${API_URL}:${API_PORT}`;
 
@@ -19,19 +18,26 @@ export const signup = async (name, email, password, role = null) => {
 };
 
 export const login = async (email, password) => {
-  const res = await fetch(`${fullApiUrl}/api/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
+  try {
+    const res = await fetch(`${fullApiUrl}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-  const data = await res.json();
-  if (data.token) {
-    await AsyncStorage.setItem("token", data.token);
-    await AsyncStorage.setItem("tutor_id", JSON.stringify(data.user.id));
-    await AsyncStorage.setItem("role", data.user.role);
+    const data = await res.json();
+    if (data.token) {
+      await AsyncStorage.setItem("token", data.token);
+      await AsyncStorage.setItem("tutor_id", JSON.stringify(data.user.id));
+      await AsyncStorage.setItem("role", data.user.role);
+    }
+    
+    return data;
+
+  } catch (error) {
+    console.error("Login error:", error)
+    return error
   }
-  return data;
 };
 
 export const generateLinkCode = async (tutor_id) => {
