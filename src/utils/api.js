@@ -1,8 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@env";
+import { API_PORT } from "@env";
+
+const fullApiUrl = `${API_URL}:${API_PORT}`;
 
 export const signup = async (name, email, password, role = null) => {
-  const res = await fetch(`${API_URL}/api/auth/signup`, {
+  const res = await fetch(`${fullApiUrl}/api/auth/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, role, password }),
@@ -16,7 +19,7 @@ export const signup = async (name, email, password, role = null) => {
 };
 
 export const login = async (email, password) => {
-  const res = await fetch(`${API_URL}/api/auth/login`, {
+  const res = await fetch(`${fullApiUrl}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -32,7 +35,7 @@ export const login = async (email, password) => {
 };
 
 export const generateLinkCode = async (tutor_id) => {
-  const res = await fetch(`${API_URL}/api/linkcodes/generate`, {
+  const res = await fetch(`${fullApiUrl}/api/linkcodes/generate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ tutor_id }),
@@ -45,7 +48,7 @@ export const verifyLinkCode = async (code, device_info) => {
         console.log("Verificando código:", code);
         console.log("Device info:", device_info);
 
-        const res = await fetch(`${API_URL}/api/linkcodes/verify`, {
+        const res = await fetch(`${fullApiUrl}/api/linkcodes/verify`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
