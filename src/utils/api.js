@@ -1,6 +1,5 @@
-const API_URL = "http://192.168.0.16:3500";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { API_URL } from "@env";
 
 export const signup = async (name, email, password, role = null) => {
   const res = await fetch(`${API_URL}/api/auth/signup`, {
