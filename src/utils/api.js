@@ -78,10 +78,18 @@ export const verifyLinkCode = async (code, device_info) => {
 };
 
 export const getChildrenDevicesByTutor = async (tutor_id) => {
-  const res = await fetch(`${fullApiUrl}/api/devices/get_devices_by_tutor`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ tutor_id }),
-  });
-  return res.json();
+  try {
+    const res = await fetch(`${fullApiUrl}/api/devices/get_devices_by_tutor`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tutor_id }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      return { ok: false, data, message: data.message || "Failed to fetch devices" };
+    }
+    return { ok: true, data };
+  } catch (error) {
+    return { ok: false, data: null, message: error.message || "Connection error" };
+  }
 };

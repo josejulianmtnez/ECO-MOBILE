@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Image, ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, ActivityIndicator, Image, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getChildrenDevicesByTutor } from "../../src/utils/api.js";
@@ -16,7 +16,7 @@ export default function Devices() {
                 const id = Number(storedId);
                 setTutorId(id);
                 const response = await getChildrenDevicesByTutor(id);
-                setDevices(response || []);
+                setDevices(Array.isArray(response) ? response : response?.data ?? []);
             }
         } catch (error) {
             console.error("Error al cargar dispositivos:", error);
@@ -44,17 +44,17 @@ export default function Devices() {
                 Dispositivos Vinculados
             </Text>
 
-            {devices.length === 0 ? (
+            {Array.isArray(devices) && devices.length === 0 ? (
                 <View className="flex-1 justify-center items-center mt-24">
                     <Image source={images.device} className="w-72 h-72 mb-6" resizeMode="contain" />
                     <Text className="text-gray-500 text-center text-lg">
-                        Aun no hay dispositivos vinculados.
+                        Aún no hay dispositivos vinculados.
                     </Text>
                 </View>
             ) : null}
 
             <View className="w-full max-w-md mb-40">
-                {devices.length > 0 ? (
+                {Array.isArray(devices) && devices.length > 0 ? (
                     devices.map((device, index) => (
                         <TouchableOpacity
                         key={index}
