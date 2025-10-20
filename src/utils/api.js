@@ -76,3 +76,12 @@ export const verifyLinkCode = async (code, device_info) => {
         return { ok: false, data: { message: "Error de conexión" } };
     }
 };
+
+export const getChildrenDevicesByTutor = async (tutor_id) => {
+  const res = await fetch(`${fullApiUrl}/api/devices/get_devices_by_tutor`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ tutor_id }),
+  });
+  return res.json();
+};
