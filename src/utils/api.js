@@ -1,7 +1,6 @@
-import { API_PORT, API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const fullApiUrl = `${API_URL}:${API_PORT}`;
+const fullApiUrl = `${process.env.EXPO_PUBLIC_API_URL}:${process.env.EXPO_PUBLIC_API_PORT}`;
 
 export const signup = async (name, email, password, role = null) => {
   const res = await fetch(`${fullApiUrl}/api/auth/signup`, {
